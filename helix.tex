@@ -19,6 +19,7 @@
 
 \newcommand{\bmw}{\mbox{\boldmath $w$\unboldmath}}
 \newcommand{\bma}{\mbox{\boldmath $a$\unboldmath}}
+\newcommand{\bmA}{\mbox{\boldmath $A$\unboldmath}}
 \newcommand{\bmb}{\mbox{\boldmath $b$\unboldmath}}
 \newcommand{\bmr}{\mbox{\boldmath $r$\unboldmath}}
 \newcommand{\bms}{\mbox{\boldmath $s$\unboldmath}}
@@ -61,7 +62,7 @@
 \begin{document}
 \maketitle
 \vspace*{-10mm}
-\section*{Method} 
+\section{Method} 
 The numerical method used for the Eulerian part of
 our micro-swimmer simulations is a staggared
 grid, dynamic adaptive mesh refinement algorithm for 
@@ -121,8 +122,8 @@ The mathematical model governing our numerical method is given as follows:
 	\label{polymer_stress}
 \end{eqnarray}
 \begin{eqnarray}
-\overset{\bmA}\equiv \frac{\partial\bmA}{\partial t} + 
-  \nabla\cdot{\vec{u}\bmA)-
+\overset{\triangledown}\bmA \equiv \frac{\partial\bmA}{\partial t} + 
+  \nabla\cdot(\vec{u}\bmA)-
   \bmA\cdot\nabla\vec{u}-
   (\nabla\vec{u})^{T}\cdot\bmA=-\frac{f_{R}(\bmA)}{\lambda}
   \label{upper_convective_deriv}
@@ -141,10 +142,10 @@ and $\bmA$ is the configuration tensor. $\phi_{m}$ is the
 level set function for material $m$ ($m=1,\ldots,M$) and
 satisfies,
 \begin{eqnarray}
-\phi_{m}(t,\vec{x})=\left( \begin{array}{cc}
+	\phi_{m}(t,\vec{x})=\left\{ \begin{array}{cc}
 	+d_{m} & \mbox{if $\vec{x}$ is in material $m$ at time $t$} \\
 	-d_{m} & \mbox{if $\vec{x}$ is not in material $m$ at time $t$}.\\
-\end{array} \label{signeddist}
+\end{array}\right. \label{signeddist}
 \end{eqnarray}
 $d_{m}$ in (\ref{signeddist}) represents the closest distance from point 
 $\vec{x}$ to the material $m$ interface.  The relaxation source term 
@@ -184,7 +185,7 @@ Figure \ref{swimmer}) undergoes rigid body motion in the form of
 translation along the $z$ axis, $\vec{u}_{translate}=(0,0,w)$ and 
 rotation about the $z$ axis $\vec{u}_{rotate}=(-\Omega y,\Omega x,0)$:
 \begin{eqnarray}
-	\frac{\vec{x}_{swimmer}}{dt}= 
+	\frac{d\vec{x}_{swimmer}}{dt}= 
 	\vec{u}_{translate}+\vec{u}_{rotate}.
 \end{eqnarray}
 The Eulerian fluid motion is coupled to the prescribed Lagrangian
@@ -196,679 +197,57 @@ swimmer motion by way of the no-slip condition,
 which is satisfied by all points $\vec{x}$ on the swimmer surface at time
 $t$.
 
-\section*{Results} 
+\section{Results} 
 
 Two types of results are presented in this report: (A) verification results, 
 and (B) validation results.
 
-\subsection*{Verification Results} 
+\subsection{Verification Results: Rising gas bubble in non-Newtonian fluid}
 
-\subsubsection*{Rising gas bubble in non-Newtonian fluid; quarter
- domain simulation versus full domain} 
+In Figure \ref{gasbubblecompare} we compare computational results
+for the rise of a gas bubble in a hybrid shear thinning and
+FENE-CR liquid solution\cite{OHTA201966}.  The model parameters
+for this test correspond to the parameters used in \cite{OHTA201966}
+(see Figure 7 from \cite{OHTA201966}).  
+The viscoelastic model is the hybrid
+Shear thinning Carreau and FENE-CR model.  The specific non-Newtonian
+model parameters are $n=1/2$, $L=10$, and $De=5$.
+We expect to compute a bubble that attains
+a very unique ``cusped-cap'' shape.
 
-\subsubsection*{Rising gas bubble in non-Newtonian fluid; 3D 
- axisymmetric simulation versus 3D quarter domain simulation}
+In our Figure \ref{gasbubblecompare}, we show the following 3 results:
+(a) collocated results from \cite{OHTA201966},
+(b) staggared quarter domain 3D resuts (mirrored across the $x-z$ and $y-z$ 
+planes for comparison purposes) computed using our latest algorithm,
+and 
+(c) staggared 3D RZ (axisymmetric $R$-$Z$) results (revolved about the 
+$z$ axis for comparison purposes).
 
-\subsection*{Validation Results} 
 
-\subsubsection*{Rising gas bubble in non-Newtonian fluid; collocated
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.3\textwidth]{collocated.png}
+\includegraphics[width=0.3\textwidth]{staggared_rz_p434.png}
+\includegraphics[width=0.3\textwidth]{staggared_qtr_p472.png}
+\caption{Comparison between staggared and unstaggared algorithms for a
+	gas bubble rising in a non-newtonian fluid; from left to right:
+	(a) collocated results 3D, (b) staggared results, 3D axi-symmetric,
+	at time $t=0.434$, (c) staggared results, 3D, quarter domain simulation
+	at time $t=0.472$. \label{gasbubblecompare} }
+\end{figure}
+
+
+\subsection{Validation Results} 
+
+
+\subsubsection{Helical swimmer in non-Newtonian fluid; collocated
  results versus staggared results}
 
-\subsubsection*{Helical swimmer in non-Newtonian fluid; collocated
- results versus staggared results}
-
-\subsubsection*{Helical swimmer in non-Newtonian fluid; 
+\subsubsection{Helical swimmer in non-Newtonian fluid; 
  $12.4$ degrees pitch angle versus $47.5$ degrees pitch angle.}
 
 \section*{Conclusions} 
 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.4\textwidth]{cryogenictank_nasa.png}
-\caption*{Cryogenic Tank (Figure from Muratov et al. \cite{Muratov2011})}
-%\begin{tiny}\cite{WILCOX2006}\end{tiny})}
-\end{figure}
-
-\FloatBarrier
-		
-\section*{History/Motivation} 
-Past research of evaporation and boiling in multi-phase flows:\\
-Can and Prosperetti (2012)\cite{CAN2012}
-\begin{itemize}
-\item sharp interface model for phase change
-\item use a constant pressure assumption for vapor-liquid flows, 
-  the velocity and temperature fields in the vapor are 
-  ignored to simplify the computation 
-\item dynamical effects of vapor approximated by spatially uniform pressure
-\item however, the flow in the vapor regions can enhance phase change
-\end{itemize}
-Gibou et al. (2007)\cite{GIBOU2007}, 
-Son et al. (1999)\cite{Son1999}, 
-Villegas et al. (2016)\cite{VILLEGAS2016}, and 
-Palmore \& Desjardins (2019)\cite{PALMORE2019}
-\begin{itemize}
-\item Flow field computed in both the liquid and the vapor.
-\item sharp interface model for phase change
-\item evaporation model depends on mass fraction
-\item however, the methods by 
-  \cite{GIBOU2007,Son1999,VILLEGAS2016,PALMORE2019} are 
-  designed for atomization and spray problems or nucleate boiling problems
-  that have outflow conditions prescribed on the computational domain
-  boundary, in contrast to the sealed tank problem.
-\end{itemize}
-Kassemi et al. (2018)\cite{KASSEMI2018}
-\begin{itemize}
-\item flow assumed incompressible in the liquid 
-  regions and compressible in the gas/vapor regions.
-\item it is necessary for the method to reduce to first order in the
-  compressible gas/vapor regions in order to guarantee that the gas/vapor 
-  density is positive.
-\item Since the gas/vapor mixture
-  is treated as a compressible material, the 
-  PISO method is used in order to allow for large time-steps; 
-  thereby avoiding the stringent acoustic time-step constraint.
-\end{itemize}
-	
-\section*{Low Mach Number Approach} 
-Conjecture:\\
-		
-We conjecture that the effect of acoustic waves 
-on the transition to unstable
-behavior in Cryogenic fuel 
-tanks is negligible when the time scale associated with 
-phase change front propagation in the stable
-condition 
-is substantially slower than the sound speed of the gas.
-In such cases we do not recommend simulating the
-effect of acoustic waves
-since a practical simulation approach that models
-acoustic waves must take relatively large time steps
-(e.g. PISO approach taken by Kassemi et al\cite{KASSEMI2018}).  
-The acoustic waves
-will be under-resolved in this case, and the associated numerical 
-method must be
-no higher than first order accurate at extremum 
-(Godunov's Theorem, see also \cite{Harten1987}).
-In the last reporting period,
-we have developed a new low Mach-number approach in which
-the gas/vapor density is assumed to be 
-spatially uniform in each separate gas/vapor region,
-thereby insuring the positivity of the gas
-density, regardless of the order of accuracy of the
-method.  In the bulk gas regions, we can switch to a space-time
-spectrally accurate method for discretizing the momentum 
-equations\cite{Pei2019}, which might enable one to
-capture the transition to chaotic behavior, all the while taking large
-time steps.  \\
-		
-\section*{Governing Equations} 
-We start with the following equations 
-(also given by Kassemi et al. (2018) \cite{KASSEMI2018}):
-\begin{eqnarray*}
-\parD{\rho}{t} + \nabla\cdot(\rho\bm{u}) = S_C
-\end{eqnarray*}
-\begin{eqnarray*}
-\parD{}{t}(\rho\bm{u}) + \nabla\cdot(\rho \bm{u}\bm{u}) = 
- -\nabla p +\nabla\cdot(2\mu \mathbb{D}) + \rho\bm{g} + \bm{F}_M
-\end{eqnarray*}
-%D: rate of deformation tensor (D = \frac{\nabla v^T + \nabla v}{2}
-\begin{eqnarray*}
-\parD{}{t}(\rho E) + \nabla\cdot(\bm{u}(\rho E + p)) = 
-\nabla\cdot(k\nabla T)+S_E
-\end{eqnarray*}
-where $\mathbb{D} = \frac{1}{2}(\nabla\bm{u}^T + \nabla\bm{u})$.\\
-The liquid is treated as incompressible and the vapor as a 
-compressible ideal gas.
-		
-\section*{Low Mach Number Treatment of Evaporation in Sealed Domains} 
-Inspired by the work of Duarte et al\cite{DUARTE2015} and
-Xia et al\cite{XiaLuTryggvason2018}, we have developed a Low Mach 
-number algorithm for simulating the flow in the gas/vapor mixture for
-a sealed tank, allowing for phase change.  
-\par
-For the low Mach number approach, we assume the liquid is 
-incompressible and that the gas/vapor region(s) have spatially 
-uniform density (i.e. the vapor is compressible, 
-but we ignore acoustic waves).\\\\
-In the bulk regions of the liquid, we have,
-\begin{eqnarray*}
-\nabla \cdot \bm{u} = 0,
-\end{eqnarray*}
-the momentum equation is,
-\begin{eqnarray*}
-\displaystyle \bm{u}_t +\bm{u}\cdot\nabla\bm{u} = 
--\frac{\nabla p}{\rho(T)} +
-\frac{\nabla\cdot(2\mu \mathbb{D})}{\rho(T)}+\bm{g},
-\end{eqnarray*}
-where we define the density in the same way as defined in the 
-Boussinesq approximation 
-\begin{eqnarray*}
-\rho = \rho_l - \alpha_l\rho_l(T-T_{0}).
-\end{eqnarray*}
-The temperature equation is,
-\begin{eqnarray*}
-(\rho C_V T)_t + \nabla\cdot(\rho C_V\bm{u}T) = \nabla\cdot k_l\nabla T
-\end{eqnarray*}
-
-In the bulk region(s) of the gas/vapor mixture, we used to have,
-\begin{eqnarray}
-\nabla \cdot \bm{u} = 0.  \label{divueqn}
-\end{eqnarray}
-For sealed domain problems, we replace (\ref{divueqn}) in the
-bulk gas/vapor mixture region(s) with,
-\begin{eqnarray*}
-\nabla\cdot\bm{u} = 
--\frac{\dot{V}_{\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)},
-%%\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi) 
-\end{eqnarray*}
-where
-\begin{eqnarray*}
-\displaystyle \dot{V}_{\textrm{tot}} \equiv 
-\int_{\Omega_{\textrm{tank}}} 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi),
-\end{eqnarray*}
-and
-\begin{eqnarray*}
-\left\{ \begin{array}{cc}
-\phi>0 & \bm{x}\in\textrm{vapor} \\
-\phi<0 & \bm{x}\in\textrm{liquid}
-\end{array} \right.
-\end{eqnarray*}
-The momentum equation in the gas/vapor mixture region(s) is,
-\begin{eqnarray*}
-\displaystyle \bm{u}_t +\bm{u}\cdot\nabla\bm{u} = 
--\frac{\nabla p}{\rho(T)} +
-\frac{\nabla\cdot(2\mu \mathbb{D})}{\rho(T)}+\bm{g},
-\end{eqnarray*}
-where we define the density in the same way as defined in the 
-Boussinesq approximation 
-\begin{eqnarray*}
-\rho = \rho_v - \alpha_v\rho_v(T-T_{0}).
-\end{eqnarray*}
-The temperature equation in the gas/vapor region(s) is,
-\begin{eqnarray*}
-(\rho C_V T)_t + \nabla\cdot(\rho C_V\bm{u}T) = \nabla\cdot k_v\nabla T.
-\end{eqnarray*}
-
-\section*{Level Set Representation} 
-\begin{minipage}[b]{0.6\textwidth}
-\begin{eqnarray*}
-\phi_t + s|\nabla\phi| = 0 \hspace{10pt} 
-\left\{ \begin{array}{cc}
-\phi>0 & \bm{x}\in\textrm{vapor} \\
-\phi<0 & \bm{x}\in\textrm{liquid}
-\end{array} \right.
-\end{eqnarray*}
-The interface velocity is 
-\begin{eqnarray*}
-\displaystyle s = \bm{u}_\Gamma\cdot\bm{n},
-\end{eqnarray*}
-where 
-\begin{eqnarray*}
-\bm{u_\Gamma} = 
-  (\bm{u}_l\cdot\bm{n})\bm{n} +\frac{\dot{m}}{\rho_l}\bm{n} = 
-  (\bm{u}_v\cdot\bm{n})\bm{n} +\frac{\dot{m}}{\rho_v}\bm{n},
-\end{eqnarray*}
-and the normal $\bm{n}$ points into the liquid:
-\begin{eqnarray*}
-\bm{n} = -\frac{\nabla\phi}{|\nabla\phi|}
-\end{eqnarray*}
-\end{minipage}
-\begin{minipage}[b]{0.25\textwidth}
-\begin{figure}[H]
-\centering
-\includegraphics[width=\textwidth]{Kartuzova_ullage.jpg}
-\caption*{figure from Kartuzova, Kassemi (2016) \cite{Kartuzova2016}}
-\end{figure}
-\end{minipage}
-	
-\section*{ Interface Conditions } 
-\begin{eqnarray*}
-\bm{u}_l\cdot \bm{n}-\bm{u}_l\cdot \bm{n} = 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)
-\hspace{15pt}
-\nabla\cdot\bm{u} = 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi) 
-\mbox{ (weak form) }
-\end{eqnarray*}
-\begin{eqnarray*}
-[p]_\Gamma = \sigma\kappa + [\bm{n}\cdot 2\mu\mathbb{D}\cdot\bm{n}]_\Gamma
-\end{eqnarray*}
-\begin{eqnarray*}
-T = T_\Gamma \mbox{ on the interface}
-\end{eqnarray*}
-For the sealed tank problem, because we strictly enforce that the 
-density in the gas/vapor mixture region(s)
-is spatially uniform with respect to each
-separate gas/vapor region, and since the liquid is 
-incompressible, we require,
-\begin{eqnarray*}
-\displaystyle \int_{\Omega_{\textrm{tank}}} \nabla\cdot \bm{u} = 0.
-\end{eqnarray*}
-Therefore, we have
-\begin{eqnarray*}
-\displaystyle \nabla\cdot\bm{u} = 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi) - 
-\frac{\dot{V}_{\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)},
-\end{eqnarray*}
-where
-\begin{eqnarray*}
-\displaystyle \dot{V}_{\textrm{tot}} \equiv 
-\int_{\Omega_{\textrm{tank}}} 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi),
-\end{eqnarray*}
-and
-\begin{eqnarray*}
-H(\phi)=\left\{ \begin{array}{cc}
- 1 & \phi>0 \mbox{ (gas/vapor mixture) } \\
- 0 & \textrm{otherwise}
- \end{array} \right.
-\end{eqnarray*}
-Mass conservation in the gas/vapor mixture region(s) 
-is now achieved by increasing the
-gas/vapor mixture density (uniformly in each gas/vapor mixture region) 
-rather than the gas/vapor mixture volume:
-\begin{eqnarray}
-\frac{d\rho_{v}}{dt}=\rho_{v}\frac{\dot{V}_{\textrm{tot}}}{\int_{\Omega}H(\phi)}
-\label{rho_v_ode}
-\end{eqnarray}
-
-Remark:
-\begin{description}
-\item[] In order for our new low Mach Number algorithm 
- to account for any number of separate gas/vapor region(s)
- in which mass transfer occurs on their respective boundaries,
- we use our previous developed ``material partitioning algorithm''
- \cite{SUSSMAN_OHTA2009,Sussman2012,wang2012hybrid} 
- which automatically identifies
- all separate contiguous material regions defined on a block structured
- adaptive mesh refinement grid.  See Figure \ref{partition}.
-\end{description}
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.4\textwidth]{figcolor.jpg}
-\caption{Illustration of the coloring of two separate interfacial segments
-  on an adaptive hierarchy of grids.  Each contiguous gas/vapor region
-  will have an associated spatially uniform density whose dependence
-  on time is governed by (\ref{rho_v_ode}).
-\label{partition}}
-\end{figure}
-
-
-\section*{} 
-\begin{mymathbox}[title=Governing Equations - Low Mach Number Approach, colframe=blue!50!black]
-	
-\begin{eqnarray*}
-H(\phi)=\left\{ \begin{array}{cc}
-  1 & \phi>0 \mbox{ gas/vapor } \\
-  0 & \phi<0 \mbox{ liquid }
- \end{array} \right.
-\hspace{15pt}
-\displaystyle \dot{V}_{\textrm{tot}} \equiv 
-\int_{\Omega_{\textrm{tank}}} 
-\dot{m}\big(\frac{1}{\rho_v}-\frac{1}{\rho_l}\big)\delta(\phi),
-\end{eqnarray*}
-\begin{eqnarray*}
-\nabla \cdot \bm{u} =
-\dot{m}\bigg(\frac{1}{\rho_v}-\frac{1}{\rho_l}\bigg)\delta(\phi) - 
-\frac{\dot{V}_{\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)}
-\hspace{15pt}
-\frac{d\rho_{v}}{dt}=\rho_{v}\frac{\dot{V}_{\textrm{tot}}}{\int_{\Omega}H(\phi)}
-\end{eqnarray*}
-\begin{eqnarray*}
-\bm{u}_t +\bm{u}\cdot\nabla\bm{u} = 
-\frac{-\nabla p}{\rho(T)} +
-\frac{\nabla\cdot(2\mu \mathbb{D})}{\rho(T)}+\bm{g}
-\end{eqnarray*}
-\begin{eqnarray*}
-(\rho C_V T)_t + \nabla\cdot(\rho C_V\bm{u}T) = \nabla\cdot k\nabla T
-\end{eqnarray*}
-\begin{eqnarray*}
-\rho = \rho - \alpha\rho(T-T_{0}) \hspace{15pt}
-\mathbb{D} = \frac{1}{2}(\nabla\bm{u}^T + \nabla\bm{u})
-\end{eqnarray*}
-\end{mymathbox}
-		
-\begin{mymathbox}[title=Interface Conditions, colframe=blue!50!black]
-			
-\begin{equation}
-T = T_\Gamma\textrm{ on interface}\\
-\end{equation}
-\begin{equation}
-[p]_\Gamma = \sigma\kappa + [\bm{n}\cdot 2\mu\mathbb{D}\cdot\bm{n}]_\Gamma\\
-\end{equation}
-\end{mymathbox}
-	
-	
-\section*{Evaporation Model} 
-
-References for Villegas/Palmore Desjardins model: 
-Villegas, Alis, Lepilliez, Tanguy 2016 \cite{VILLEGAS2016} and
-Palmore, Desjardins 2019 \cite{PALMORE2019}. 
-\begin{mymathbox}[title=Villegas/Palmore Desjardins , colframe=blue!50!black]
-		
-\begin{eqnarray*}
-\dot{m}= \frac{k_l\nabla T_l\cdot \bm{n} - 
-k_v\nabla T_v\cdot \bm{n}}{L}= \frac{\rho_g D_m \nabla Y \cdot \bm{n}}{1-Y} 
-\end{eqnarray*}
-\end{mymathbox}
-
-Reference for Kassemi model: Kassemi, Kartuzova, 
-Hylton 2018 \cite{KASSEMI2018}
-%%\cite{Schrage1953} (Schrage 1953)
-\begin{mymathbox}[title=Kassemi, colframe=blue!50!black]
-\small
-\begin{eqnarray*}
-\dot{m} = \frac{[k\nabla T\cdot \bm{n}]_\Gamma}{L} = 
-\bigg(\frac{2\sigma}{2-\sigma}\bigg)
-\sqrt{\frac{M}{2\pi R_{\textrm{univ}}} }
-\bigg(\frac{P_\Gamma(T_\Gamma)}
-{\sqrt{T_\Gamma}} - \frac{P_{\textsc{eos}}(T_v)}{\sqrt{T_v}}\bigg)
-\end{eqnarray*}
-\begin{eqnarray*}
-P_\Gamma=
-P_{\textrm{ref}}e^{\big[\frac{LM}{R_{\textrm{univ}}}
-\big(\frac{1}{T_{\textrm{ref}}} - \frac{1}{T_\Gamma}\big) \big]}
-\end{eqnarray*}
-\end{mymathbox}
-	
-\section*{Work to be done on our Low Mach number model} 
-We next will include temperature effects on gas/vapor expansion/compression
-in the gas/vapor regions.  We refer to the work by 
-Xia, Lu, Tryggvason 2018 \cite{XiaLuTryggvason2018}.
-\begin{mymathbox}[title=volume change due to temperature, colframe=blue!50!black]
-\begin{eqnarray*}
-H(\phi)=\left\{ \begin{array}{cc}
-  1 & \phi>0 \mbox{ gas/vapor } \\
-  0 & \phi<0 \mbox{ liquid }
- \end{array} \right.
-\end{eqnarray*}
-\begin{eqnarray*}
-\dot{V}_T = \tilde{\rho_{v}}\big(\frac{d\tilde{v}}{dT}\big)\frac{DT}{Dt}
-\hspace{10pt} 
-\displaystyle \dot{V}_{T,\textrm{tot}} \equiv 
-\int_{\Omega_{\textrm{tank}}} 
-\dot{V}_T H(\phi)
-\hspace{10pt} 
-\tilde{\rho_{v}}=\tilde{\rho_{v}}(p,T) 
-\hspace{10pt} 
-\tilde{v}\equiv\frac{1}{\tilde{\rho_{v}}}
-\end{eqnarray*}
-\begin{eqnarray*}
-\nabla \cdot \bm{u} =
-\dot{m}\bigg(\frac{1}{\rho_v}-\frac{1}{\rho_l}\bigg)\delta(\phi) - 
-\frac{\dot{V}_{\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)}+\dot{V}_T-
-\frac{\dot{V}_{T,\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)} \hspace{10pt}
-\end{eqnarray*}
-\end{mymathbox}
-
-\section*{Numerical Method} 
-\newcounter{stepcount}
-\begin{enumerate}
-\item Advection : CISL-MOF \cite{VAHAB2021}\cite{WEYMOUTH2010}
-\item Phase change \cite{VAHAB2021}
-\setcounter{stepcount}{\value{enumi}}
-\end{enumerate}
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.4\textwidth]{Vahab_Tprobe.jpg}
-\vspace{-1em}
-\caption*{\small figure from Vahab et al. 2021 \cite{VAHAB2021}\\ remark: we must interpolate from the underlying grid to find $T(x_{\textrm{probe}})$}
-%\begin{tiny}\cite{WILCOX2006}\end{tiny})}
-\end{figure}
-\vspace{-1em}
-\begin{enumerate}
-\setcounter{enumi}{\value{stepcount}}
-\item Diffusion
-\item Low-Mach projection \cite{Pei2019}\cite{VAHAB2021}
-\end{enumerate}
-
-\section*{Numerical Method (more detailed)} 
-\fontsize{10pt}{8.2}\selectfont
-{\color{blueaccent}1.} Conservative Advection\\
-\hspace*{20pt} {\color{blueaccent}(a)} $\frac{D\phi}{Dt}=0, \quad m = 1,...,M$\quad Level Set function\\
-\hspace*{20pt} {\color{blueaccent}(b)} volume fractions \texttt{+} centroids\\
-\hspace*{20pt}\hspace*{20pt}\hspace*{20pt}$\frac{DF_m}{Dt}=0$ \quad directionally-split\cite{WEYMOUTH2010}\\
-\hspace*{20pt}\hspace*{20pt}\hspace*{20pt}$\displaystyle \bm{x}_{m,(ijk)} \equiv \frac{\int_{\Omega_{ijk}}\bm{x}H(\phi_m)d\Omega}{\int_{\Omega_{ijk}}H(\phi_m)d\Omega}$\\
-\hspace*{20pt} {\color{blueaccent}(c)} $\frac{D\bm{u}}{Dt}=0$\\
-\hspace*{20pt} {\color{blueaccent}(d)} $\frac{D\bm{T}}{Dt}=0$\\
-{\color{blueaccent}2.} Phase change \cite{VAHAB2021} \\
-\hspace*{20pt} {\color{blueaccent}(a)} phase change velocity for evaporation $\frac{\dot{m}}{\rho_l}\bm{n}$\\
-\hspace*{20pt} {\color{blueaccent}(b)} unsplit MOF advection of interface(s) undergoing phase change\\
-\hspace*{20pt} {\color{blueaccent}(c)} redistribution of mass source to the vapor side of the interface\\
-\hspace*{20pt} {\color{blueaccent}(d)} $\dot{V}_{\textrm{tot}}$ determined\\
-\hspace*{20pt} {\color{blueaccent}(e)} $\rho_v \leftarrow \rho_v(1+\frac{\Delta t \dot{V}_{\textrm{tot}}}{|\Omega_v|})$\\
-{\color{blueaccent}3.} Diffusion (both materials)\\
-\hspace*{20pt}\hspace*{20pt}$\rho^{n+1}\frac{u^*-u^{advect}}{\Delta t} = \nabla\cdot(2\mu D^*)$ \\
-\hspace*{20pt}\hspace*{20pt}$\rho^{n+1}C_V\frac{ T^{n+1}-T_{advect}}{\Delta t} = \nabla\cdot(k \nabla T)$ \\
-\hspace*{20pt}\hspace*{20pt}$T=T_\Gamma \textrm{ where } \{\bm{x}|\phi(\bm{x})=0\}$\\
-{\color{blueaccent}4.} Pressure Projection\\
-\hspace*{20pt}\hspace*{20pt}$u^{n+1} = u^* - \Delta t \frac{\nabla p}{\rho^{n+1}}-\frac{\Delta t \kappa \nabla H}{\rho^{n+1}}$\\
-\hspace*{20pt}\hspace*{20pt}$\nabla\cdot u^{n+1} = \dot{m}\bigg(\frac{1}{\rho_v}-\frac{1}{\rho_l}\bigg)\delta(\phi) - \frac{\dot{V}_{\textrm{tot}} H(\phi)}{\int_{\Omega}H(\phi)}$\\
-Important Remarks:
-\begin{description}
-\item[1.] For phase change models in which the interface 
-  temperature is a constant, then the
-  interpolation to get the probe temperature depends on the 
-  interface temperature and the probe length is $\Delta x/2$.   
-  Otherwise, if the interface temperature
-  is not constant (e.g. for evaporation), then the
-  probe temperature does not include the interface temperature in the
-  interpolation stencil, and the probe length is $\Delta x$.
-\item[2.]  
-$\kappa$ is approximated using the VOF Height Function 
-technique\cite{SUSSMAN2003}
-\end{description}
-
-	
-\section*{1d body fitted model in spherical coordinates for
-  verifying the 2D/3D AMR-MOF algorithms.} 
-$\displaystyle \frac{1}{r^2}\parD{}{r}(r^2\rho_g u_r) = 0$\\
-$\displaystyle \parD{}{t}(\rho_g C_{pg}T)+\frac{1}{r^2}\parD{}{r}(r^2 \rho_g C_{pg} u_r T) = \frac{1}{r^2}\parD{}{r}(k_g r^2 \parD{T}{r})$\\
-$\displaystyle \parD{}{t}(\rho_g Y)+\frac{1}{r^2}\parD{}{r}(r^2 \rho_g  u_r Y) = \frac{1}{r^2}\parD{}{r}(\rho_g D_m r^2 \parD{Y}{r})$\\\\
-
-\noindent
-Evaporation Model\\
-\hspace*{20pt}  Villegas/Palmore Desjardins:\\
-\hspace*{20pt} $\displaystyle \frac{[k\nabla T\cdot \bm{n}]_\Gamma}{L}= \frac{\rho_g D_m \nabla Y \cdot \bm{n}}{1-Y} $\\\\
-
-\noindent
-\hspace*{20pt} Kassemi:\\
-\hspace*{20pt} $\displaystyle \frac{[k\nabla T\cdot \bm{n}]_\Gamma}{L} = \bigg(\frac{2\sigma}{2-\sigma}\bigg)\sqrt{\frac{M}{2\pi R_{\textrm{univ}}} }\bigg(\frac{P_\Gamma(T_\Gamma)}{\sqrt{T_\Gamma}} - \frac{P_{\textsc{eos}}(T_v)}{\sqrt{T_v}}\bigg)$\\\\
-\hspace*{20pt} $P_\Gamma=P_{\textrm{ref}}e^{\big[\frac{LM}{R_{\textrm{univ}}}\big(\frac{1}{T_{\textrm{ref}}} - \frac{1}{T_\Gamma}\big) \big]}$
-
-\section*{Verification tests} 
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.8\textwidth]{BorodulinDrop.jpg}
-\caption{figure from Borodulin et al. 2017 \cite{BORODULIN2017}
-  \label{experiment} }
-\end{figure}
-\FloatBarrier
-
-
-\section*{Verification of the 1D body fitted code - Borodulin test} 
-\begin{table}[H]
-\begin{minipage}[b]{0.6\textwidth}
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{ |p{2.3cm}||p{2.4cm}|p{3cm}|p{3cm}|  }
-\hline
-\multicolumn{4}{|c|}{Borodulin test using Villegas / Palmore+Desjardins model, $t=499.84$} \\
-\hline
-grid resolution& $A_{\textsf{ratio}}$ & $|A_{\textsf{ratio},h}-A_{\textsf{ratio},2h}|$ & $\log_2(\textrm{Err}_{h}/\textrm{Err}_{2h})$\\
-\hline
-32  & 0.62120 & -- & --\\
-64  & 0.57918 & 0.04202 & --\\
-128 & 0.55439 & 0.02479 & 0.761 \\
-256 & 0.54082 & 0.01357 & 0.869 \\
-512 & 0.53372 & 0.00710 & 0.935 \\
-1024& 0.53007 & 0.00365 & 0.960 \\
-\hline
-\end{tabular}
-}
-\newline
-\vspace{3em}
-
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{ |p{2.3cm}||p{2.4cm}|p{3cm}|p{3cm}|  }
-\hline
-\multicolumn{4}{|c|}{Borodulin test using Kassemi model, $t=499.84$} \\
-\hline
-grid resolution& $A_{\textsf{ratio}}$ & $|A_{\textsf{ratio},h}-A_{\textsf{ratio},2h}|$ & $\log_2(\textrm{Err}_{h}/\textrm{Err}_{2h})$\\
-\hline
-32  & 0.62408 & -- & --\\
-64  & 0.58102 & 0.04306 & --\\
-128 & 0.55546 & 0.02556 & 0.752 \\
-256 & 0.54141 & 0.01405 & 0.863 \\
-512 & 0.53404 & 0.00737 & 0.931 \\
-1024& 0.53026 & 0.00378 & 0.963\\
-\hline
-\end{tabular}
-}
-\newline
-\vspace{2em}
-\newline
-\tiny{$A_{\textsf{ratio}}=(R_\Gamma/R_{\Gamma,0})^2$}
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.39\textwidth}
-\includegraphics[width=\textwidth]{BorodulinTest_VillegasModel.eps}
-\includegraphics[width=\textwidth]{BorodulinTest_KassemiModel.eps}
-\caption*{\tiny{blue: analytic quasi-steady infinite domain solution, orange: numerical result (grid 1024 cells)}}
-\end{minipage}
-\end{table}
-
-
-
-\section*{Verification of the 1D body fitted code - Villegas test} 
-\begin{table}[H]
-\begin{minipage}[b]{0.6\textwidth}
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{ |p{2.3cm}||p{2.4cm}|p{3cm}|p{3cm}|  }
-\hline
-\multicolumn{4}{|c|}{Villegas test using Villegas / Palmore+Desjardins model, $t=0.0142$ } \\
-\hline
-grid resolution& $A_{\textsf{ratio}}$ & $|A_{\textsf{ratio},h}-A_{\textsf{ratio},2h}|$ & $\log_2(\textrm{Err}_{h}/\textrm{Err}_{2h})$\\
-\hline
-32  & 0.59281 & -- & --\\
-64  & 0.56038 & 0.03243 & --\\
-128 & 0.54219 & 0.01819 & 0.834 \\
-256 & 0.53253 & 0.00966 & 0.913 \\
-512 & 0.52755 & 0.00498 & 0.956 \\
-1024& 0.52501 & 0.00254 & 0.971 \\
-\hline
-\end{tabular}
-}
-\newline
-\vspace{3em}
-
-\centering
-\resizebox{\columnwidth}{!}{
-\begin{tabular}{ |p{2.3cm}||p{2.4cm}|p{3cm}|p{3cm}|  }
-\hline
-\multicolumn{4}{|c|}{Villegas test using Kassemi model, $t=0.0142$} \\
-\hline
-grid resolution& $A_{\textsf{ratio}}$ & $|A_{\textsf{ratio},h}-A_{\textsf{ratio},2h}|$ & $\log_2(\textrm{Err}_{h}/\textrm{Err}_{2h})$\\
-\hline
-32  & 0.59530 & -- & --\\
-64  & 0.56192 & 0.03338 & --\\
-128 & 0.54309 & 0.01883 & 0.826\\
-256 & 0.53306 & 0.01003 & 0.909\\
-512 & 0.52787 & 0.00519 & 0.951\\
-1024& 0.52524 & 0.00263 & 0.981\\
-\hline
-\end{tabular}
-}
-\newline
-\vspace{2em}
-\newline
-\tiny{$A_{\textsf{ratio}}=(R_\Gamma/R_{\Gamma,0})^2$}
-\end{minipage}
-\hfill
-\begin{minipage}[b]{0.39\textwidth}
-\includegraphics[width=\textwidth]{VillegasTest_VillegasModel.eps}
-\includegraphics[width=\textwidth]{VillegasTest_KassemiModel.eps}
-\caption*{\tiny{blue: analytic quasi-steady infinite domain solution, orange: numerical result (grid 1024 cells)}}
-\end{minipage}
-\end{table}
-
-
-\section*{Verification of the new 2D/3D low Mach number AMR-MOF method} 
-% new figures contained in plot_data folder
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.67\textwidth]{plot_data/BorodulinTest_small.png}
-\caption*{Grid refinement study corresponding to experiments reported in
- Borodulin et al\cite{BORODULIN2017} for an evaporating spherical
- drop (see 3rd row of Figure \ref{experiment}).  
- Level 4 case has 5 levels total;
- effective fine grid resolution is $512\times 512$.  The ``Kassemi 1D''
- result comes from our 1D, spherical coordinate systems, body fitted code
- which we consider as the ``ground truth.'' The ``analytical''
- result corresponds to the analytical solution for the quasi steady problem }
-\end{figure}
-\FloatBarrier
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.67\textwidth]{plot_data/VillegasTest_small.png}
-\caption*{Verification of our new low Mach number algorithm for an
- evaporating spherical drop benchmark problem posed by
- Villegas et al (2016)\cite{VILLEGAS2016} and 
- Palmore \& Desjardins (2019)\cite{PALMORE2019}.  
- All AMR-MOF results have two levels of AMR in addition to the base
- coarse grid; the effective fine grid resolution is $128\times 128$.
- The orange line corresponds to the ``Kassemi'' model with outflow (non-sealed)
- boundary conditions. The red line 
- corresponds to the ``Kassemi'' model with sealed (no outflow) 
- boundary conditions.  The aqua line corresponds to the ``Palmore
- Desjardins'' model with outflow boundary conditions.  The
- blue line corresponds to the ``Palmore
- Desjardins'' model with outflow boundary conditions using our 1D 
- body-fitted code, and the dashed line corresponds to the quasi-steady
- infinite domain analytic solution using the ``Palmore-Desjardins''
- model. }
-\end{figure}
-\FloatBarrier
-
-%% radius=0.0432 (initial radius 0.05)
-%% aratio= ( 0.0432/0.05 ) ^ 2=0.746  time=273 seconds
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.60\textwidth]{plot_data/zoom_out_lev4.png}
-\caption*{
-  View of AMR-MOF simulation results
-  for the velocity field, temperature profile, and
-  interface (pink curve) at time $t=273$ seconds.   The numerical
-  simulation corresponds to the experiment conducted by
-  Borodulin et al\cite{BORODULIN2017} for an evaporating spherical
-  drop (see 3rd row of Figure \ref{experiment}).  The grid hierarchy consists
-  of a base coarse level plus 4 additional levels of AMR.  The effective
-  fine grid resolution is $512\times 512$.
-  }
-\end{figure}
-\FloatBarrier
-
-\begin{figure}[h]
-\centering
-\includegraphics[width=0.60\textwidth]{plot_data/zoom_in_lev4.png}
-\caption*{
-  Zoomed-in View of AMR-MOF simulation results
-  for the velocity field, temperature profile, and
-  interface (pink curve) at time $t=273$ seconds.   The numerical
-  simulation corresponds to the experiment conducted by
-  Borodulin et al\cite{BORODULIN2017} for an evaporating spherical
-  drop (see 3rd row of Figure \ref{experiment}).  The grid hierarchy consists
-  of a base coarse level plus 4 additional levels of AMR.  The effective
-  fine grid resolution is $512\times 512$.
-}
-\end{figure}
-\FloatBarrier
 
 \newpage
 \bibliographystyle{acm}
