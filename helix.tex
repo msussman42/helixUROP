@@ -53,7 +53,8 @@
 \setlength{\droptitle}{-10em}
 \title{An Eulerian-Lagrangian method for simulating the interaction of a 
  Non-Newtonian fluid with complex shaped micro-swimmers}
-\author{Brandon Vargas-Torres}
+\author{Brandon Vargas-Torres,
+   Tomas Solano, Kourosh Shoele, Hadi Mohammadigoushki, Mark Sussman}
 
 %% hexadecimal digits must be upper case.
 
@@ -62,7 +63,7 @@
 \vspace*{-10mm}
 \section*{Method} 
 The numerical method used for the Eulerian part of
-my micro-swimmer simulations is a staggared
+our micro-swimmer simulations is a staggared
 grid, dynamic adaptive mesh refinement algorithm for 
 incompressible multiphase flow.  
 The dynamics of the micro-swimmer geometry, represented on a 
@@ -117,12 +118,13 @@ The mathematical model governing our numerical method is given as follows:
 \end{eqnarray}
 \begin{eqnarray}
 \bmtau_{p}=\frac{\mu_{p}\bmf{s}(\bmA)}{\lambda}
+	\label{polymer_stress}
 \end{eqnarray}
 \begin{eqnarray}
 \overset{\bmA}\equiv \frac{\partial\bmA}{\partial t} + 
   \nabla\cdot{\vec{u}\bmA)-
   \bmA\cdot\nabla\vec{u}-
-  (\nabla\vec{u})^{T}\cdot\bmA=-\frac{f_{R}(A)}{\lambda}
+  (\nabla\vec{u})^{T}\cdot\bmA=-\frac{f_{R}(\bmA)}{\lambda}
   \label{upper_convective_deriv}
 \end{eqnarray}
 \begin{eqnarray}
@@ -140,15 +142,85 @@ level set function for material $m$ ($m=1,\ldots,M$) and
 satisfies,
 \begin{eqnarray}
 \phi_{m}(t,\vec{x})=\left( \begin{array}{cc}
-  $+d$ & \mbox{if $\vec{x}$ is in material $m$ at time $t$} \\
-  $-d$ & \mbox{if $\vec{x}$ is not in material $m$ at time $t$}.\\
-  \end{array}
+	+d_{m} & \mbox{if $\vec{x}$ is in material $m$ at time $t$} \\
+	-d_{m} & \mbox{if $\vec{x}$ is not in material $m$ at time $t$}.\\
+\end{array} \label{signeddist}
 \end{eqnarray}
-$define $f_{R}$ amd $f_{S}|$
+$d_{m}$ in (\ref{signeddist}) represents the closest distance from point 
+$\vec{x}$ to the material $m$ interface.  The relaxation source term 
+$f_{R}(\bmA)$ found in (\ref{upper_convective_deriv}) is defined as
+follows
+\begin{eqnarray}
+	f_{R}(\bmA)=\left\{ \begin{array}{cc}
+		\frac{\bmA}{1-\mbox{tr}(\bmA)/L^{2}}-\bmI &
+		\mbox{FENE-P model} \\
+		\frac{\bmA-\bmI}{1-\mbox{tr}(\bmA)/L^{2}} &
+		                \mbox{FENE-CR model}
+	\end{array}
+	\right.
+\end{eqnarray}
+The polymer stress versus strain term $f_{s}(\bmA)$ found in
+(\ref{polymer_stress}) is defined as follows
+\begin{eqnarray}
+	f_{s}(\bmA)=\left\{ \begin{array}{cc}
+		\frac{\bmA}{1-\mbox{tr}(\bmA)/L^{2}}-\bmI &
+		\mbox{FENE-P model} \\
+		\frac{\bmA-\bmI}{1-\mbox{tr}(\bmA)/L^{2}} &
+		                \mbox{FENE-CR model}
+	\end{array}
+	\right.
+\end{eqnarray}
+We refer the reader to the following references for more information on
+the mathematical models for non-Newtonian 
+fluids\cite{BIRD1980213,PURNODE19981}.
 
+The (novel) results presented in this report are preliminary in that we only 
+present results for the one-way coupling between the 
+swimmer (prescribed Lagrangian description of its motion)
+and the non-Newtonian fluid (Eulerian description of its motion).  The
+prescribed swimmer motion influences the fluid motion but the fluid 
+motion does not in turn effect the swimmer motion.  The swimmer (see
+Figure \ref{swimmer}) undergoes rigid body motion in the form of
+translation along the $z$ axis, $\vec{u}_{translate}=(0,0,w)$ and 
+rotation about the $z$ axis $\vec{u}_{rotate}=(-\Omega y,\Omega x,0)$:
+\begin{eqnarray}
+	\frac{\vec{x}_{swimmer}}{dt}= 
+	\vec{u}_{translate}+\vec{u}_{rotate}.
+\end{eqnarray}
+The Eulerian fluid motion is coupled to the prescribed Lagrangian
+swimmer motion by way of the no-slip condition,
+\begin{eqnarray}
+	\vec{u}_{fluid}(t,\vec{x})=
+	\vec{u}_{translate}(\vec{x})+\vec{u}_{rotate},
+\end{eqnarray}
+which is satisfied by all points $\vec{x}$ on the swimmer surface at time
+$t$.
 
+\section*{Results} 
 
+Two types of results are presented in this report: (A) verification results, 
+and (B) validation results.
 
+\subsection*{Verification Results} 
+
+\subsubsection*{Rising gas bubble in non-Newtonian fluid; quarter
+ domain simulation versus full domain} 
+
+\subsubsection*{Rising gas bubble in non-Newtonian fluid; 3D 
+ axisymmetric simulation versus 3D quarter domain simulation}
+
+\subsection*{Validation Results} 
+
+\subsubsection*{Rising gas bubble in non-Newtonian fluid; collocated
+ results versus staggared results}
+
+\subsubsection*{Helical swimmer in non-Newtonian fluid; collocated
+ results versus staggared results}
+
+\subsubsection*{Helical swimmer in non-Newtonian fluid; 
+ $12.4$ degrees pitch angle versus $47.5$ degrees pitch angle.}
+
+\section*{Conclusions} 
 
 \begin{figure}[h]
 \centering
