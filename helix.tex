@@ -75,10 +75,21 @@ are presented in the following journal articles:
 It is important to note that my results correspond to a staggared grid 
 formulation which is known to have better stability properties than the
 collocated formulation\cite{rhie1983numerical}.  
-The pressure projection step corresponding
+The source of the stability problems for a collocated grid algorithm
+is that the pressure projection step corresponding
 to the collocated formulation has a non-empty null space in the pattern of
 a checkerboard velocity distribution.
-Having said that,
+
+The numerical algorithm
+for simulating non-Newtonian multi-fluid/multi-phase flows that was
+presented in \cite{OHTA201966} was for a collocated grid.  The numerical
+algorithm presented in \cite{peihierarchical} was for a staggared grid,
+but only Newtonian flows were simulated in \cite{peihierarchical}.
+The non-Newtonian multi-fluid/multi-phase results presented in 
+this report are distinct from \cite{OHTA201966}
+in that the present results were computed on a staggared grid.
+
+The potential pitfalls of the collocated formulation notwithstanding,
 in figures \ref{compare_bubble} and
 \ref{compare_helix} below, it is observed that the collocated results of the
 past agree, qualitatively, with the present staggared grid results.  This
@@ -95,8 +106,46 @@ The mathematical model governing our numerical method is given as follows:
 \begin{eqnarray}
 	\frac{\partial(\rho\vec{u})}{\partial t}+
 	\nabla\cdot(\rho\vec{u}\vec{u}^{T})=
-	\nabla\cdot(-p\bmI + \bmtau)
+	\nabla\cdot(-p\bmI + \bmtau) \label{momentum}
 \end{eqnarray}
+\begin{eqnarray}
+\bmtau=\bmtau_{s}+\bmtau_{p} \label{solvent_and_polymer}
+\end{eqnarray}
+\begin{eqnarray}
+\bmtau_{s}=2\mu_{s}\bmD=\mu_{s}(\nabla\vec{u}+\nabla\vec{u}^{T}) 
+  \label{solvant_stress}
+\end{eqnarray}
+\begin{eqnarray}
+\bmtau_{p}=\frac{\mu_{p}\bmf{s}(\bmA)}{\lambda}
+\end{eqnarray}
+\begin{eqnarray}
+\overset{\bmA}\equiv \frac{\partial\bmA}{\partial t} + 
+  \nabla\cdot{\vec{u}\bmA)-
+  \bmA\cdot\nabla\vec{u}-
+  (\nabla\vec{u})^{T}\cdot\bmA=-\frac{f_{R}(A)}{\lambda}
+  \label{upper_convective_deriv}
+\end{eqnarray}
+\begin{eqnarray}
+\frac{\partial\phi_{m}}{\partial t}+\vec{u}\cdot\nabla\phi_{m}=0
+  \hspace{10pt} m=1,\ldots,M
+\end{eqnarray}
+$\vec{u}$ is the fluid velocity, $\rho$ is the density which can
+have large jumps at material interfaces, $p$ is the pressure, and $\bmtau$
+is a combination of the solvent stress tensor $\bmtau_{s}$ 
+and polymer stress tensor, $\bmtau_{p}$.  $\mu_{s}$ is the solvent viscosity
+which can have large jumps at material interfaces, $\bmD$ is the
+rate of deformation tensor, $bmD=\nabla\vec{u}+\nabla\vec{u}^{T})$, 
+and $\bmA$ is the configuration tensor. $\phi_{m}$ is the
+level set function for material $m$ ($m=1,\ldots,M$) and
+satisfies,
+\begin{eqnarray}
+\phi_{m}(t,\vec{x})=\left( \begin{array}{cc}
+  $+d$ & \mbox{if $\vec{x}$ is in material $m$ at time $t$} \\
+  $-d$ & \mbox{if $\vec{x}$ is not in material $m$ at time $t$}.\\
+  \end{array}
+\end{eqnarray}
+$define $f_{R}$ amd $f_{S}|$
+
 
 
 
