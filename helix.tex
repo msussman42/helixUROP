@@ -92,8 +92,8 @@ this report are distinct from \cite{OHTA201966}
 in that the present results were computed on a staggared grid.
 
 The potential pitfalls of the collocated formulation notwithstanding,
-in figures \ref{compare_bubble} and
-\ref{compare_helix} below, it is observed that the collocated results of the
+in Figures \ref{gasbubblecompare}, \ref{helix12p4}, and
+\ref{helix47p5} below, it is observed that the collocated results of the
 past agree, qualitatively, with the present staggared grid results.  This
 is encouraging, since the present results (a) reinforce that the previous 
 reported collocated results were valid and did not suffer from stability 
@@ -181,7 +181,8 @@ swimmer (prescribed Lagrangian description of its motion)
 and the non-Newtonian fluid (Eulerian description of its motion).  The
 prescribed swimmer motion influences the fluid motion but the fluid 
 motion does not in turn effect the swimmer motion.  The swimmer (see
-Figure \ref{swimmer}) undergoes rigid body motion in the form of
+Figures \ref{helix12p4} and \ref{helix47p5}) undergoes 
+rigid body motion in the form of
 translation along the $z$ axis, $\vec{u}_{translate}=(0,0,w)$ and 
 rotation about the $z$ axis $\vec{u}_{rotate}=(-\Omega y,\Omega x,0)$:
 \begin{eqnarray}
@@ -237,16 +238,45 @@ $z$ axis for comparison purposes).
 \end{figure}
 
 
-\subsection{Validation Results} 
+\subsection{Validation Results: Helical swimmer in non-Newtonian fluid } 
 
+In Figures \ref{helix12p4} and \ref{helix47p5} we compare previous 
+results for the $Q_{11}$ component of the configuration tensor
+using the collocated algorithm with the current staggared
+grid algorithm.  The pitch angle in Figure \ref{helix12p4} is 
+$12.4$ degress and the pitch angle in Figure \ref{helix47p5} is
+$47.5$ degrees.  The liquid surrounding the swimmer is modeled as a 
+FENE-P fluid.  The translational motion for both staggared grid
+simulations was $0.00355$ cm/s.  Unfortunately, after the simulations
+were completed, it was discovered that the translational motion for the
+$12.4$ collocated case was $0.015$ cm/s and the translational
+motion for the $47.5$ collocated case was $0.027$cm/s.
 
-\subsubsection{Helical swimmer in non-Newtonian fluid; collocated
- results versus staggared results}
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.4\textwidth]{collocated_12p4.png}
+\includegraphics[width=0.4\textwidth]{staggared_12p4.png}
+\caption{Comparison ($Q_{11}$ component) between staggared and 
+    	unstaggared algorithms for 
+        non-Newtonian FENE-P flow past a helical swimmer with pitch angle
+        $12p4$ degrees.
+	(a) left: collocated results, (b) right: staggared results,
+	at time $t=0.5$. \label{helix12p4} }
+\end{figure}
 
-\subsubsection{Helical swimmer in non-Newtonian fluid; 
- $12.4$ degrees pitch angle versus $47.5$ degrees pitch angle.}
+\begin{figure}[htpb]
+\centering
+\includegraphics[width=0.4\textwidth]{collocated_47p5.png}
+\includegraphics[width=0.4\textwidth]{staggared_47p5.png}
+\caption{Comparison ($Q_{11}$ component) between staggared and 
+    	unstaggared algorithms for 
+        non-Newtonian FENE-P flow past a helical swimmer with pitch angle
+        $47.5$ degrees.
+	(a) left: collocated results, (b) right: staggared results,
+	at time $t=0.55$. \label{helix47p5} }
+\end{figure}
 
-\section*{Conclusions} 
+\section{Conclusions} 
 
 
 \newpage
