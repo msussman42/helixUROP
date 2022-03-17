@@ -64,17 +64,20 @@
 \vspace*{-10mm}
 \section{Method} 
 The numerical method used for the Eulerian part of
-our micro-swimmer simulations is a staggared
+our micro-swimmer simulations is a staggered
 grid, dynamic adaptive mesh refinement algorithm for 
-incompressible multiphase flow.  
+incompressible multi-phase flow.  
 The dynamics of the micro-swimmer geometry, represented on a 
 Lagrangian grid, is coupled to the Eulerian fluid flow by way of converting
 the Lagrangian representation of the micro-swimmer to a
-Moment-of-Fluid Eulerian representation.  The details of the numerical method
+Moment-of-Fluid Eulerian representation.  The details of the numerical 
+method, excluding the staggered grid treatment for the 
+non-Newtonian force terms,
 are presented in the following journal articles: 
 \cite{dyadechko2005moment,ArientiSussman2014,peihierarchical,OHTA201966}.
 
-It is important to note that my results correspond to a staggared grid 
+It is important to note that our results presented here
+correspond to a staggered grid 
 formulation which is known to have better stability properties than the
 collocated formulation\cite{rhie1983numerical}.  
 The source of the stability problems for a collocated grid algorithm
@@ -85,20 +88,21 @@ a checkerboard velocity distribution.
 The numerical algorithm
 for simulating non-Newtonian multi-fluid/multi-phase flows that was
 presented in \cite{OHTA201966} was for a collocated grid.  The numerical
-algorithm presented in \cite{peihierarchical} was for a staggared grid,
+algorithm presented in \cite{peihierarchical} was for a staggered grid,
 but only Newtonian flows were simulated in \cite{peihierarchical}.
 The non-Newtonian multi-fluid/multi-phase results presented in 
 this report are distinct from \cite{OHTA201966}
-in that the present results were computed on a staggared grid.
+in that the present results were computed on a staggered grid.
 
 The potential pitfalls of the collocated formulation notwithstanding,
 in Figures \ref{gasbubblecompare}, \ref{helix12p4}, and
 \ref{helix47p5} below, it is observed that the collocated results of the
-past agree, qualitatively, with the present staggared grid results.  This
+past agree, qualitatively, with the present staggered grid results.  This
 is encouraging, since the present results (a) reinforce that the previous 
-reported collocated results were valid and did not suffer from stability 
-problems, and (b) reinforce that the present staggared grid method has 
-been implemented correctly, and has a mathematical guarantee of 
+reported collocated results were ``reasonably valid'' and did 
+not suffer from stability 
+problems, and (b) reinforce that the present staggered grid method has 
+been implemented ``reasonably correctly,'' and has a mathematical guarantee of 
 stability\cite{GUITTET2015215} for future simulations.
 
 The mathematical model governing our numerical method is given as follows:
@@ -218,49 +222,81 @@ a very unique ``cusped-cap'' shape.
 
 In our Figure \ref{gasbubblecompare}, we show the following 3 results:
 (a) collocated results from \cite{OHTA201966},
-(b) staggared quarter domain 3D resuts (mirrored across the $x-z$ and $y-z$ 
+(b) staggered quarter domain 3D results (mirrored across the $x-z$ and $y-z$ 
 planes for comparison purposes) computed using our latest algorithm,
 and 
-(c) staggared 3D RZ (axisymmetric $R$-$Z$) results (revolved about the 
+(c) staggered 3D RZ (axisymmetric $R$-$Z$) results (revolved about the 
 $z$ axis for comparison purposes).
 
+With the latest staggered grid method, we are able to reproduce the cusped
+cap shape that was computed with a collocated grid method.  
+We remark that our new results are not in quantitative 
+agreement with the previous collocated results, this can be attributed to 
+either (a) not having enough data to compare at precisely the same
+simulation time, or (b) a difference in treatment of the interface
+jump conditions where a Newtonian gas meets with a Non-Newtonian 
+liquid.
 
 \begin{figure}[htpb]
 \centering
 \includegraphics[width=0.3\textwidth]{collocated.png}
 \includegraphics[width=0.3\textwidth]{staggared_rz_p434.png}
 \includegraphics[width=0.3\textwidth]{staggared_qtr_p472.png}
-\caption{Comparison between staggared and unstaggared algorithms for a
-	gas bubble rising in a non-newtonian fluid; from left to right:
-	(a) collocated results 3D, (b) staggared results, 3D axi-symmetric,
-	at time $t=0.434$, (c) staggared results, 3D, quarter domain simulation
+\caption{Comparison between staggered and non-staggered algorithms for a
+	gas bubble rising in a non-Newtonian fluid; from left to right:
+	(a) collocated results 3D, (b) staggered results, 3D axi-symmetric,
+	at time $t=0.434$, (c) staggered results, 3D, quarter domain simulation
 	at time $t=0.472$. \label{gasbubblecompare} }
 \end{figure}
 
 
-\subsection{Validation Results: Helical swimmer in non-Newtonian fluid } 
+\subsection{Validation Results and Discussion: 
+ Helical swimmer in non-Newtonian fluid } 
 
+%x=cos(omega t)  y=-sin(omega t)
+%x'=omega y  y'=-omega x
+% partial travels 2 pi radians in 2 pi/omega seconds i.e. omega radians/s
 In Figures \ref{helix12p4} and \ref{helix47p5} we compare previous 
 results for the $Q_{11}$ component of the configuration tensor
-using the collocated algorithm with the current staggared
+using the collocated algorithm with the current staggered
 grid algorithm.  The pitch angle in Figure \ref{helix12p4} is 
-$12.4$ degress and the pitch angle in Figure \ref{helix47p5} is
+$12.4$ degrees and the pitch angle in Figure \ref{helix47p5} is
 $47.5$ degrees.  The liquid surrounding the swimmer is modeled as a 
-FENE-P fluid.  The translational motion for both staggared grid
+FENE-P fluid.  The rotational velocity of the Helical swimmer for 
+all of the simulations reported here is 
+$\Omega=2\pi$ radians per second. 
+The translational motion for both staggered grid
 simulations was $0.00355$ cm/s.  Unfortunately, after the simulations
 were completed, it was discovered that the translational motion for the
-$12.4$ collocated case was $0.015$ cm/s and the translational
-motion for the $47.5$ collocated case was $0.027$cm/s.
+$12.4$ degrees collocated case was $0.015$ cm/s and the translational
+motion for the $47.5$ degrees collocated case was $0.027$cm/s.
+
+As is shown in the two comparison Figures, \ref{helix12p4} and
+\ref{helix47p5}, we have qualitative agreement between the
+previous collocated algorithm and the present staggered grid
+algorithm.  Whereas the distribution of $Q_{11}$ is in agreement,
+there is disagreement in the magnitude of $Q_{11}$.  We 
+attribute this disagreement to the following:
+(a) the translational velocity was different between the collocated
+simulations and the staggered grid simulations, 
+(b) the treatment of the boundary conditions where the non-Newtonian
+liquid interacts with the dynamic helical swimmer is different
+between the two formulations, and (c) (perhaps the biggest
+reason for the difference) the recent staggered grid swimmer results
+implemented more aggressive adaptive mesh refinement which has
+the benefit of more efficient use of available computer resources,
+but at the cost of less accuracy on the coarse parts of the 
+computational domain.
 
 \begin{figure}[htpb]
 \centering
 \includegraphics[width=0.4\textwidth]{collocated_12p4.png}
 \includegraphics[width=0.4\textwidth]{staggared_12p4.png}
-\caption{Comparison ($Q_{11}$ component) between staggared and 
-    	unstaggared algorithms for 
+\caption{Comparison ($Q_{11}$ component) between staggered and 
+    	non-staggered algorithms for 
         non-Newtonian FENE-P flow past a helical swimmer with pitch angle
         $12p4$ degrees.
-	(a) left: collocated results, (b) right: staggared results,
+	(a) left: collocated results, (b) right: staggered results,
 	at time $t=0.5$. \label{helix12p4} }
 \end{figure}
 
@@ -268,16 +304,34 @@ motion for the $47.5$ collocated case was $0.027$cm/s.
 \centering
 \includegraphics[width=0.4\textwidth]{collocated_47p5.png}
 \includegraphics[width=0.4\textwidth]{staggared_47p5.png}
-\caption{Comparison ($Q_{11}$ component) between staggared and 
-    	unstaggared algorithms for 
+\caption{Comparison ($Q_{11}$ component) between staggered and 
+    	non-staggered algorithms for 
         non-Newtonian FENE-P flow past a helical swimmer with pitch angle
         $47.5$ degrees.
-	(a) left: collocated results, (b) right: staggared results,
+	(a) left: collocated results, (b) right: staggered results,
 	at time $t=0.55$. \label{helix47p5} }
 \end{figure}
 
 \section{Conclusions} 
 
+A new staggered grid numerical method has been developed for simulating
+the Eulerian-Lagrangian interaction of a ``Helical Micro-swimmer'' with
+the surrounding Non-Newtonian fluid.
+In comparing the present (novel) staggered grid numerical method for
+non-Newtonian multi-phase, multi-fluid flow with the previous 
+collocated grid results, we have observed qualitative agreement.  
+In the results section above, we report on our reasonings for the
+lack of quantitative agreement.  We believe the quantitative 
+differences can be resolved in the future.
+The staggered grid method is beneficial,
+all things considered, because the method has inherent stability
+properties\cite{GUITTET2015215} which will become important in 
+the future when simulating
+Eulerian-Lagrangian interaction phenomena with more energetic
+forcing terms.  Also it is planned for the future to include
+fluctuating hydrodynamics 
+modeling\cite{PLUNKETT2014121,wang2018fluctuating} 
+into our simulations.
 
 \newpage
 \bibliographystyle{acm}
